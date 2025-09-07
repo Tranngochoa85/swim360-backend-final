@@ -45,5 +45,4 @@ jobs:
 
     # Bước 5: Chạy Security Scan để kiểm tra lỗ hổng bảo mật
     - name: Scan for vulnerabilities
-      run: |
-        safety check -r requirements.txt
+      run: safety scan -r requirements.txt
