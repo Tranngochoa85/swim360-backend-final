@@ -1,0 +1,9 @@
+# Môi trường ảo của Python
+venv/
+__pycache__/
+
+# File biến môi trường
+.env
+
+# Thư mục của Node.js
+node_modules/

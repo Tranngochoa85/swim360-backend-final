@@ -1,0 +1,38 @@
+# Tên của quy trình
+name: Python CI
+
+# Quy định khi nào quy trình này sẽ chạy
+on:
+  push:
+    branches: [ "master" ] # Chạy mỗi khi có code mới được đẩy lên nhánh "master"
+  pull_request:
+    branches: [ "master" ]
+
+# Định nghĩa các công việc cần làm
+jobs:
+  build:
+    # Chạy trên một máy ảo Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+    # Bước 1: Lấy mã nguồn từ repository về máy ảo
+    - uses: actions/checkout@v3
+
+    # Bước 2: Thiết lập môi trường Python
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    # Bước 3: Cài đặt các thư viện từ file requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # Bước 4 (Tùy chọn): Thêm một bước kiểm tra code cơ bản (ví dụ: linting)
+    # - name: Lint with flake8
+    #   run: |
+    #     pip install flake8
+    #     # Dừng quy trình nếu có lỗi linting
+    #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
