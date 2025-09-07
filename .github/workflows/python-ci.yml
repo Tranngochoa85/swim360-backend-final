@@ -35,10 +35,11 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    # Bước 5: Đăng nhập và Chạy Security Scan
+    # Bước 5: Chạy Security Scan
     - name: Scan for vulnerabilities
+      # Thêm 'env' để gán secret vào biến môi trường SAFETY_API_KEY
+      env:
+        SAFETY_API_KEY: ${{ secrets.SAFETY_API_KEY }}
       run: |
-        # Dùng API Key đã lưu trong GitHub Secrets để đăng nhập
-        safety auth login --key ${{ secrets.SAFETY_API_KEY }}
-        # Sau khi đăng nhập thành công, chạy lệnh scan
+        # Lệnh scan sẽ tự động tìm và dùng biến môi trường ở trên
         safety scan -r requirements.txt
