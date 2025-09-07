@@ -4,19 +4,16 @@ name: Python CI/CD
 # Quy định khi nào quy trình này sẽ chạy
 on:
   push:
-    branches: [ "main" ] # Chạy mỗi khi có code mới được đẩy lên nhánh "main"
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ] # Chạy mỗi khi có một Pull Request vào nhánh "main"
+    branches: [ "main" ]
 
 jobs:
-  # Tên của công việc, bạn có thể đặt tùy ý
   build:
-    # Môi trường để chạy, chúng ta dùng Ubuntu bản mới nhất
     runs-on: ubuntu-latest
 
-    # Các bước thực hiện tuần tự
     steps:
-    # Bước 1: Lấy code từ kho chứa về môi trường chạy
+    # Bước 1: Lấy code từ kho chứa về
     - name: Checkout code
       uses: actions/checkout@v4
 
@@ -24,9 +21,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Phiên bản Python khớp với dự án
+        python-version: '3.11'
 
-    # Bước 3: Cài đặt các thư viện của dự án và các công cụ kiểm tra
+    # Bước 3: Cài đặt các thư viện
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -36,13 +33,12 @@ jobs:
     # Bước 4: Chạy Linting để kiểm tra phong cách code
     - name: Lint with Flake8
       run: |
-        # Dừng quy trình nếu có lỗi.
-        # --count: Đếm số lỗi
-        # --select=E9,F63,F7,F82: Chỉ chọn các lỗi nghiêm trọng
-        # --show-source: Hiển thị dòng code bị lỗi
-        # --statistics: Thống kê lỗi
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    # Bước 5: Chạy Security Scan để kiểm tra lỗ hổng bảo mật
+    # Bước 5: Đăng nhập và Chạy Security Scan
     - name: Scan for vulnerabilities
-      run: safety scan -r requirements.txt
+      run: |
+        # Dùng API Key đã lưu trong GitHub Secrets để đăng nhập
+        safety auth login --key ${{ secrets.SAFETY_API_KEY }}
+        # Sau khi đăng nhập thành công, chạy lệnh scan
+        safety scan -r requirements.txt
