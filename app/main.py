@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-# Thêm learning_request vào dòng import
-from app.api.v1.endpoints import auth, coach_profile, learning_request
+# Thêm offer vào dòng import
+from app.api.v1.endpoints import auth, coach_profile, learning_request, course, offer
 
 app = FastAPI(
     title="Swim360 API",
@@ -14,6 +14,7 @@ def read_root():
 # Gắn các router đã có
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(coach_profile.router, prefix="/api/v1/coach-profiles", tags=["Coach Profiles"])
-
-# Gắn router mới cho "Yêu cầu học bơi"
 app.include_router(learning_request.router, prefix="/api/v1/learning-requests", tags=["Learning Requests"])
+app.include_router(course.router, prefix="/api/v1/courses", tags=["Courses"])
+# Gắn router mới cho "Ưu đãi"
+app.include_router(offer.router, prefix="/api/v1", tags=["Offers"]) # Tiền tố chung là /api/v1
