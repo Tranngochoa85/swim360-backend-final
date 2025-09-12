@@ -12,3 +12,5 @@ email-validator==2.1.1  # <-- THÊM DÒNG NÀY
 
 # --- Supabase ---
 supabase==2.4.1
+# --- Payment Gateway ---
+stripe==8.5.0

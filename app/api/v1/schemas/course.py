@@ -14,26 +14,28 @@ class CourseBase(BaseModel):
     total_sessions: int = Field(..., gt=0)
     session_duration: int = Field(..., gt=0)
     schedule_description: Optional[str] = None
-    start_date: Optional[date] = None
+    start_date: Optional[str] = None
     location_name: str
     location_address: Optional[str] = None
     max_students: int = Field(..., gt=0)
+    status: str = 'draft' # Mặc định là bản nháp
 
 # Dữ liệu API nhận vào khi tạo mới
 class CourseCreate(CourseBase):
     pass
 
-# Dữ liệu API nhận vào khi cập nhật
+# Dữ liệu API nhận vào khi cập nhật (tất cả các trường đều không bắt buộc)
 class CourseUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-    # ...
+    price: Optional[float] = None
+    status: Optional[str] = None
+    # ... có thể thêm các trường khác nếu muốn cho phép cập nhật
 
-# Dữ liệu API trả về (trả lại kiểu dữ liệu gốc)
+# Dữ liệu API trả về
 class CourseResponse(CourseBase):
     id: UUID
     coach_id: UUID
-    status: str
     created_at: datetime
     updated_at: datetime
 
